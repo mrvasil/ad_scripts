@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PB</title>
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --card-bg: rgba(50, 50, 50, 0.7);
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-color: #0084ff;
+            --hover-color: rgba(0, 132, 255, 0.2);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(30, 30, 30, 0.8);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(45deg, #2c2c2c 0%, #1a1a1a 100%);
+            background-attachment: fixed;
+        }
+        
+        h1 {
+            color: var(--text-color);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            text-align: center;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+        
+        h2 {
+            color: var(--text-color);
+            font-weight: 400;
+            margin-top: 40px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2:before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--accent-color);
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        
+        h3 {
+            color: var(--text-color);
+            font-weight: 500;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow-color);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow-color);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .label {
+            font-weight: 500;
+            width: 120px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .value {
+            flex-grow: 1;
+            padding: 10px 15px;
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            border: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .value:hover {
+            background-color: var(--hover-color);
+            border-color: rgba(0, 132, 255, 0.3);
+        }
+        
+        .copy-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            margin-left: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .copy-button:hover {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .copy-msg {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(39, 174, 96, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.85rem;
+        }
+        
+        .show-msg {
+            opacity: 1;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        pre {
+            background-color: var(--input-bg);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            margin: 0;
+        }
+        
+        code {
+            font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-icon {
+            margin-right: 8px;
+            opacity: 0.8;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            margin: 0;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .card-icon {
+            margin-right: 10px;
+            color: var(--accent-color);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .glow {
+            position: absolute;
+            width: 40%;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 132, 255, 0.15) 0%, rgba(0, 132, 255, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            top: 10%;
+            right: 15%;
+            filter: blur(30px);
+        }
+        
+        .glow-2 {
+            position: absolute;
+            width: 30%;
+            height: 200px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, rgba(138, 43, 226, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            bottom: 15%;
+            left: 10%;
+            filter: blur(30px);
+        }
+        
+        /* Специальный стиль только для URL-значений */
+        .value[data-is-url="true"]:has(text:first-child[href^="http"]):hover {
+            text-decoration: underline;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+    
+    <h1>Poison Berries team</h1>
+    
+    <div class="section">
+        <h2>SSH Access</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <h3 class="card-title">Remote Terminal Access</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">Command:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    ssh pb@pb.zagip.ru
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Username:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    pb
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    Zbo9)Db'LyX_4
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Web Services</h2>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.91 8.84L8.56 2.23a1.93 1.93 0 0 0-1.81 0L3.1 4.13a2.12 2.12 0 0 0-.05 3.69l12.22 6.93a2 2 0 0 0 1.94 0L21 12.51a2.12 2.12 0 0 0-.09-3.67Z"></path><path d="m3.09 8.84 12.35-6.61a1.93 1.93 0 0 1 1.81 0l3.65 1.9a2.12 2.12 0 0 1 .1 3.69L8.73 14.75a2 2 0 0 1-1.94 0L3 12.51a2.12 2.12 0 0 1 .09-3.67Z"></path><line x1="12" y1="22" x2="12" y2="13"></line><path d="M5 12.5V18a2 2 0 0 0 1 1.73l6 3.33"></path><path d="M19 12.5V18a2 2 0 0 1-1 1.73l-6 3.33"></path></svg>
+                </div>
+                <h3 class="card-title">Packmate</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://pb.zagip.ru:65000/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Username:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    poison
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    rw-xn0EqbHPT7
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"></path><path d="M21 9 3 9"></path></svg>
+                </div>
+                <h3 class="card-title">Farm</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://pb.zagip.ru:12634/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Username:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    pb
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    hsH_aH4fOo5dI
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M7 7h10"></path><path d="M7 12h10"></path><path d="M7 17h10"></path></svg>
+                </div>
+                <h3 class="card-title">Portainer</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://pb.zagip.ru:16982/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Username:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    pb-admin
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    -PKkRHQNl5E1g
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+                </div>
+                <h3 class="card-title">Grafana</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://pb.zagip.ru:3000/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Username:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    poison
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    11p25-w4HuUk
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path><path d="M12 4v1"></path><path d="M12 19v1"></path><path d="M20 12h-1"></path><path d="M5 12H4"></path><path d="M17.657 6.343l-.707.707"></path><path d="M7.05 16.95l-.707.707"></path><path d="M17.657 17.657l-.707-.707"></path><path d="M7.05 7.05l-.707-.707"></path></svg>
+                </div>
+                <h3 class="card-title">VS-code</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://pb.zagip.ru:21836/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Password:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    52bba1f0da6d7749b7d6c2d7
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Board & Teams Information</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3 class="card-title">Dashboard Access</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">Board URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    https://live.mephictf.ru
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+			<div class="item">
+                <span class="label">Board URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://10.10.10.10
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>            
+            <div class="item">
+                <span class="label">Team Token:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                   	5ff0ec4072a656b9
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+			<div class="item">
+                <span class="label">Zip pass:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    JjqOiPAVEpnFmz1pruFUGmjvSRtCkUU2
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Flag Format:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    [A-Z0-9]{31}=
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Teams Configuration</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <h3 class="card-title">Team Setup</h3>
+            </div>
+            
+            <pre><code>teams = {
+    'dtl': '10.80.0.2',
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Tasks</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"></path><path d="m8 12 3 3 5-5"></path></svg>
+                </div>
+                <h3 class="card-title">Task Management</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">Task1 URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://10.80.41.2:1111/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Task2 URL:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    http://10.80.41.2:2222/
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+            <div class="item">
+                <span class="label">Restart Task:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    ./restart-docker.sh
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Flag Management</h2>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                </div>
+                <h3 class="card-title">Send Flags Code</h3>
+            </div>
+            
+            <pre><code>import requests
+
+def send_flag(flags):
+    url = 'http://10.10.10.10/flags'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Team-Token': '5ff0ec4072a656b9'
+    }
+    response = requests.put(url, headers=headers, json=flags)
+    print(response.text)
+
+send_flag([''])</code></pre>
+            <button class="copy-button" style="margin-top: 15px;" onclick="copyCode(this)">Copy Code</button>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <h3 class="card-title">Find Flags in Traffic</h3>
+            </div>
+            
+            <div class="item">
+                <span class="label">Command:</span>
+                <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
+                    sudo tcpdump -A -i any | grep -E '[A-Z0-9]{31}='
+                    <span class="copy-msg">Copied!</span>
+                </div>
+                <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(element) {
+            const text = element.innerText.split('\n')[0];
+            
+            // Проверяем, является ли текст URL-адресом
+            if (text.startsWith('http')) {
+                window.open(text, '_blank');
+                return;
+            }
+            
+            const textarea = document.createElement('textarea');
+            textarea.textContent = text;
+            textarea.style.position = 'fixed';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            const msg = element.querySelector('.copy-msg');
+            msg.classList.add('show-msg');
+            setTimeout(() => {
+                msg.classList.remove('show-msg');
+            }, 1000);
+        }
+        
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling;
+            const text = codeBlock.textContent;
+            const textarea = document.createElement('textarea');
+            textarea.textContent = text;
+            textarea.style.position = 'fixed';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+                
