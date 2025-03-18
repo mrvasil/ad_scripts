@@ -259,7 +259,6 @@
             filter: blur(30px);
         }
         
-        /* Специальный стиль только для URL-значений */
         .value[data-is-url="true"]:has(text:first-child[href^="http"]):hover {
             text-decoration: underline;
             color: var(--accent-color);
@@ -301,7 +300,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    Zbo9)Db'LyX_4
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -339,7 +338,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    rw-xn0EqbHPT7
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -373,7 +372,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    hsH_aH4fOo5dI
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -407,7 +406,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    -PKkRHQNl5E1g
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -441,7 +440,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    11p25-w4HuUk
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -467,7 +466,7 @@
             <div class="item">
                 <span class="label">Password:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    52bba1f0da6d7749b7d6c2d7
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -504,7 +503,7 @@
             <div class="item">
                 <span class="label">Team Token:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                   	5ff0ec4072a656b9
+                   	edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -512,7 +511,7 @@
 			<div class="item">
                 <span class="label">Zip pass:</span>
                 <div class="value" onclick="copyToClipboard(this)" data-is-url="true">
-                    JjqOiPAVEpnFmz1pruFUGmjvSRtCkUU2
+                    edited
                     <span class="copy-msg">Copied!</span>
                 </div>
                 <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling)">Copy</button>
@@ -597,7 +596,7 @@ def send_flag(flags):
     url = 'http://10.10.10.10/flags'
     headers = {
         'Content-Type': 'application/json',
-        'X-Team-Token': '5ff0ec4072a656b9'
+        'X-Team-Token': 'edited'
     }
     response = requests.put(url, headers=headers, json=flags)
     print(response.text)
@@ -629,7 +628,6 @@ send_flag([''])</code></pre>
         function copyToClipboard(element) {
             const text = element.innerText.split('\n')[0];
             
-            // Проверяем, является ли текст URL-адресом
             if (text.startsWith('http')) {
                 window.open(text, '_blank');
                 return;
@@ -670,4 +668,3 @@ send_flag([''])</code></pre>
     </script>
 </body>
 </html>
-                
