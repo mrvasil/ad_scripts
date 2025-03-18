@@ -18,3 +18,7 @@ git clone https://github.com/mrvasil/ad_scripts.git
 git clone https://github.com/mrvasil/ctf-ad-mirror-tool.git
 ```
 **Open** [ctf-setup.sh](https://github.com/mrvasil/ad_scripts/blob/main/ctf-setup.sh).
+
+<br><br>
+### Poison Berries VM backup
+[pb_backup.zip](https://drive.google.com/file/d/12fBfMvxlop_BUmIq3eddkzWOaKYHhEuq/view?usp=sharing)
